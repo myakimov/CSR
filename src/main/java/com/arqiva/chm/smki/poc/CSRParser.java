@@ -47,7 +47,7 @@ public class CSRParser {
     }
 
     private PKCS10CertificationRequest convertPemToPKCS10CertificationRequest(String pem) {
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+        //Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         PKCS10CertificationRequest csr = null;
         ByteArrayInputStream pemStream = null;
         try {

@@ -3,7 +3,7 @@ package com.arqiva.chm.smki.poc;
 import org.bouncycastle.asn1.*;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.asn1.x509.*;
-import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
+import org.bouncycastle.openssl.PEMWriter;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
@@ -29,7 +29,7 @@ public class CSRGenerator {
         kpGen.initialize(2056, new SecureRandom());
         KeyPair pair = kpGen.generateKeyPair();
         PKCS10CertificationRequestBuilder p10Builder = new JcaPKCS10CertificationRequestBuilder(
-                new X500Principal("CN=Requested Test Certificate"), pair.getPublic());
+                new X500Principal(""), pair.getPublic());
         JcaContentSignerBuilder csBuilder = new JcaContentSignerBuilder("SHA256withRSA");
         ContentSigner signer = null;
         signer = csBuilder.build(pair.getPrivate());
@@ -41,7 +41,7 @@ public class CSRGenerator {
 
         ASN1EncodableVector hw = new ASN1EncodableVector();
         hw.add(new ASN1ObjectIdentifier("1.3.6.1.5.5.7.8.1"));
-        hw.add(new DERUTF8String( "SER:ID:2106"));
+        hw.add(new DERInteger(2106821234L));
 
         otherName.add(new DERSequence(hw));
 
@@ -56,7 +56,7 @@ public class CSRGenerator {
 
         PemObject pemObject = new PemObject("CERTIFICATE REQUEST", csr.getEncoded());
         StringWriter str = new StringWriter();
-        JcaPEMWriter pemWriter = new JcaPEMWriter(str);
+        PEMWriter pemWriter = new PEMWriter(str);
         pemWriter.writeObject(pemObject);
         pemWriter.close();
         str.close();
